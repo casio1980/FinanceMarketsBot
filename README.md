@@ -1,1 +1,1 @@
-# FinanceMarketsBot
+# FinancialMarketsBot

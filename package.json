@@ -1,0 +1,25 @@
+{
+  "name": "financialmarketsbot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casio1980/FinancialMarketsBot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casio1980/FinancialMarketsBot/issues"
+  },
+  "homepage": "https://github.com/casio1980/FinancialMarketsBot#readme",
+  "dependencies": {
+    "config": "1.28.1",
+    "node-telegram-bot-api": "0.29.0",
+    "winston": "^3.0.0-rc1"
+  }
+}
