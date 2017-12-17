@@ -1,4 +1,7 @@
 {
     "token": "paste-your-token-here",
+    "chat": paste-your-chat-id-here,
+    "autoStart": true,
+    "workerInterval": 300000,
     "logfile": "bot.log"
 }
