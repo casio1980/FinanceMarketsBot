@@ -19,7 +19,16 @@
   "homepage": "https://github.com/casio1980/FinancialMarketsBot#readme",
   "dependencies": {
     "config": "1.28.1",
+    "lodash": "4.17.5",
+    "moment": "^2.20.1",
+    "mongodb": "2.2.33",
     "node-telegram-bot-api": "0.29.0",
-    "winston": "^3.0.0-rc1"
+    "winston": "3.0.0-rc1",
+    "yahoo-finance": "0.3.5"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0"
   }
 }
