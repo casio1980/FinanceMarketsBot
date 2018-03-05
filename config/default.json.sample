@@ -1,4 +1,5 @@
 {
+    "dbUrl": "paste-your-db-url-here",
     "token": "paste-your-token-here",
     "chat": paste-your-chat-id-here,
     "autoStart": true,
