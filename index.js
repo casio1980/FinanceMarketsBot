@@ -5,9 +5,12 @@ const moment = require('moment');
 const config = require('config');
 const winston = require('winston');
 const database = require('./js/database');
+const c = require('./js/constants');
 
 const chatId = config.get('chat');
 const dbUrl = config.get('dbUrl');
+
+const fmtNumber = number => Number(number).toFixed(2);
 
 // Init log
 const logger = winston.createLogger({
@@ -39,8 +42,8 @@ const getQuote = async (symbol) => {
     close,
   } = latest;
   const percent = ((close / open) - 1) * 100;
-  return `Date: ${moment(date).format('YYYY-MM-DD')};
-Open: ${Number(open).toFixed(2)}; Close: ${Number(close).toFixed(2)} [${Number(percent).toFixed(2)}%]`;
+  return `Date: ${moment(date).format(c.DATE_FORMAT)};
+    Open: ${fmtNumber(open)}; Close: ${fmtNumber(close)} [${fmtNumber(percent)}%]`;
 };
 
 //
@@ -52,8 +55,10 @@ const requestYahooQuote = async options =>
     });
   });
 
-// Worker func
+let bot;
 let workerId;
+
+// Worker func
 const worker = () => {
   logger.debug('Worker');
   // bot.sendMessage(chatId, 'Worker');
@@ -65,7 +70,7 @@ const start = () => {
 };
 
 // Create bot
-const bot = new TelegramBot(config.get('token'), { polling: true });
+bot = new TelegramBot(config.get('token'), { polling: true });
 logger.info('Bot started');
 
 // Handle /start
@@ -129,14 +134,25 @@ bot.onText(/\/q (.*)/, async (message, match) => { // TODO quote
       preMarketPrice,
       preMarketChange,
       preMarketChangePercent,
+      regularMarketPrice,
+      // regularMarketDayHigh,
+      // regularMarketDayLow,
+      // regularMarketVolume,
+      // regularMarketPreviousClose,
+      regularMarketSource,
+      // regularMarketOpen,
     } = price;
 
     console.log(price);
 
     // TODO
-    const response = preMarketSource === 'FREE_REALTIME'
-      ? `${symbol}: ${preMarketPrice} | ${Number(preMarketChange).toFixed(2)} [${Number(preMarketChangePercent * 100).toFixed(2)}%]`
-      : `${symbol}: ${preMarketSource}`;
+    const preMarket = (preMarketSource === 'FREE_REALTIME' && preMarketPrice)
+      ? `${symbol} PM: ${fmtNumber(preMarketPrice)} | ${fmtNumber(preMarketChange)} [${fmtNumber(preMarketChangePercent * 100)}%]`
+      : `${symbol} PM: ${preMarketSource}`;
+    const regularMarket = (regularMarketSource === 'FREE_REALTIME' && regularMarketPrice)
+      ? `${symbol}: ${fmtNumber(regularMarketPrice)}`
+      : `${symbol}: ${regularMarketSource}`;
+    const response = `${preMarket};\n${regularMarket}`;
     bot.sendMessage(chat.id, response);
     logger.info(`${chat.id} <- ${response}`);
   }
