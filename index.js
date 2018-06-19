@@ -129,6 +129,7 @@ bot.onText(/\/q (.*)/, async (message, match) => { // TODO quote
   if (chat.id === chatId) {
     const { price } = await requestYahooQuote({ symbol: sym, modules: ['price'] });
     const {
+      marketState,
       symbol,
       preMarketSource,
       preMarketPrice,
@@ -152,7 +153,7 @@ bot.onText(/\/q (.*)/, async (message, match) => { // TODO quote
     const regularMarket = (regularMarketSource === 'FREE_REALTIME' && regularMarketPrice)
       ? `${symbol}: ${fmtNumber(regularMarketPrice)}`
       : `${symbol}: ${regularMarketSource}`;
-    const response = `${preMarket};\n${regularMarket}`;
+    const response = `${preMarket};\n${regularMarket}\nMarket: ${marketState}`;
     bot.sendMessage(chat.id, response);
     logger.info(`${chat.id} <- ${response}`);
   }
