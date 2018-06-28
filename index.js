@@ -66,6 +66,8 @@ const worker = async () => {
     const {
       marketState,
       symbol,
+      preMarketTime,
+      regularMarketTime,
       // preMarketSource,
       preMarketPrice,
       preMarketChange,
@@ -81,20 +83,20 @@ const worker = async () => {
       // regularMarketOpen,
     } = price;
 
-    // console.log(price); // eslint-disable-line no-console
+    console.log(price); // eslint-disable-line no-console
 
     if (!response) response = '';
-    if (response && response.length > 0) response += '\n';
+    // if (response && response.length > 0) response += '\n';
     if (marketState === c.PREMARKET) {
-      const priceStr = preMarketPrice
-        ? `${fmtNumber(preMarketPrice)} | ${fmtNumber(preMarketChange)} [${fmtNumber(preMarketChangePercent * 100)}%]`
-        : c.NOT_AVAILABLE;
-      response += `${symbol} ${c.PREMARKET}: ${priceStr}`;
+      if (preMarketPrice) {
+        const priceStr = `${fmtNumber(preMarketPrice)} | ${fmtNumber(preMarketChange)} [${fmtNumber(preMarketChangePercent * 100)}%]`;
+        response += `\n${symbol} ${c.PREMARKET}: ${priceStr}`;
+      }
     } else if (marketState === c.REGULAR) {
       const priceStr = `${fmtNumber(regularMarketPrice)} | ${fmtNumber(regularMarketChange)} [${fmtNumber(regularMarketChangePercent * 100)}%]`;
-      response += `${symbol}: ${priceStr}`;
+      response += `\n${symbol}: ${priceStr}`;
     } else {
-      response += `${symbol}: Unknown marketState = ${marketState}`;
+      response += `\n${symbol}: Unknown marketState = ${marketState}`;
     }
   });
 
